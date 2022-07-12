@@ -40,7 +40,7 @@ options to remedy this:
 
 You can simply wrap an `<animated-highlight>` element *without* a `controls`
 attribute and add your own custom logic that uses the JavaScript API described
-below. This is probably the way to go for integration in Frameworks like React.
+below. This is probably the way to go for integration in frameworks like React.
 
 #### 2. Style the controls
 
@@ -69,10 +69,9 @@ This means that you can very easily just add your own:
 ```
 
 All you need to do to make your custom buttons (in this case, `<div>` elements)
-work is add the attributes `<div data-command="prev">Back</div>` and
-`<div data-command="next">Next</div>` respectively. You can also build up your
-custom controls to do way more than just provide two buttons. See
-`demo/index.html` for an example.
+work is add the attributes `data-command="prev"` and `data-command="next"`
+respectively. You can also build up your custom controls to do way more than
+just provide two buttons. See `demo/index.html` for an example.
 
 #### 4. Hack the element
 
