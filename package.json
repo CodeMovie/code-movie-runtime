@@ -1,0 +1,40 @@
+{
+  "name": "animated-highlight",
+  "version": "1.0.0",
+  "main": "dist/module.js",
+  "browser": "dist/bundle.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "ts:check": "tsc -p tsconfig.json --noEmit",
+    "ts:types": "tsc -p tsconfig.build.json",
+    "esbuild:browser": "esbuild src/bundle.ts --bundle --minify --target=es2020 --outfile=dist/bundle.js",
+    "esbuild:module": "esbuild src/index.ts --target=es2020 --outfile=dist/index.js",
+    "esbuild": "npm run esbuild:browser && npm run esbuild:module",
+    "build": "rm -rf dist && mkdir dist && npm run esbuild && npm run ts:types",
+    "build:watch": "esbuild src/bundle.ts --bundle  --sourcemap --target=es2020 --outfile=dist/index.js --watch",
+    "lint": "eslint .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "prepublishOnly": "npm run ts:check && npm run lint && npm run test && npm run build"
+  },
+  "author": "peter@peterkroener.de",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@types/jest": "^28.1.4",
+    "@typescript-eslint/eslint-plugin": "^5.25.0",
+    "@typescript-eslint/parser": "^5.25.0",
+    "esbuild": "^0.14.47",
+    "eslint": "^8.15.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "jest": "^28.1.2",
+    "jest-environment-jsdom": "^28.1.2",
+    "prettier": "^2.6.2",
+    "ts-jest": "^28.0.5",
+    "typescript": "^4.6.4"
+  }
+}
