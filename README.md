@@ -51,7 +51,7 @@ the following CSS [`::part()` selectors](https://developer.mozilla.org/en-US/doc
 * `animated-highlight::part(controls-prevBtn)`: The "previous" buttons
 * `animated-highlight::part(controls-nextBtn)`: The "next" buttons
 
-The buttons are `<button>` elements with `<span>` element inside.
+The buttons are `<button>` elements with `<span>` elements inside.
 
 #### 3. Replace the controls
 
@@ -76,7 +76,7 @@ just provide two buttons. See `demo/index.html` for an example.
 #### 4. Hack the element
 
 The element's shadow root is open and most of the private properties on the
-`AnimatedHighlight` class are actually private. Go and mess with 'em!
+`AnimatedHighlight` class are not actually private. Go and mess with 'em!
 
 ## JavaScript API
 
