@@ -1,15 +1,15 @@
-import { AnimatedHighlight } from "../src";
+import { CodeMovieRuntime } from "../src";
 
 beforeAll(() => {
-  window.customElements.define("animated-highlight", AnimatedHighlight);
-  return window.customElements.whenDefined("animated-highlight");
+  window.customElements.define("code-movie-runtime", CodeMovieRuntime);
+  return window.customElements.whenDefined("code-movie-runtime");
 });
 
 function $(
   attributes: Record<string, any> = {},
   innerHTML = ""
-): AnimatedHighlight {
-  const instance = document.createElement("animated-highlight");
+): CodeMovieRuntime {
+  const instance = document.createElement("code-movie-runtime");
   for (const name in attributes) {
     instance.setAttribute(name, attributes[name]);
   }

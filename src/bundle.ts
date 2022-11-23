@@ -1,4 +1,4 @@
-import { AnimatedHighlight } from ".";
+import { CodeMovieRuntime } from ".";
 
-window.customElements.get("animated-highlight") ??
-  window.customElements.define("animated-highlight", AnimatedHighlight);
+window.customElements.get("code-movie-runtime") ??
+  window.customElements.define("code-movie-runtime", CodeMovieRuntime);

@@ -1,20 +1,19 @@
 {
-  "name": "@sirpepe/animated-highlight",
+  "name": "@codemovie/code-movie-runtime",
+  "description": "Web runtime element for Code.Movie animations",
   "version": "1.0.1",
   "main": "dist/module.js",
   "browser": "dist/bundle.js",
+  "module": "dist/module.js",
   "types": "dist/index.d.ts",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "ts:check": "tsc -p tsconfig.json --noEmit",
     "ts:types": "tsc -p tsconfig.build.json",
     "esbuild:browser": "esbuild src/bundle.ts --bundle --minify --target=es2020 --outfile=dist/bundle.js",
-    "esbuild:module": "esbuild src/index.ts --target=es2020 --outfile=dist/index.js",
+    "esbuild:module": "esbuild src/index.ts --format=esm --target=es2020 --outfile=dist/index.js",
     "esbuild": "npm run esbuild:browser && npm run esbuild:module",
     "build": "rm -rf dist && mkdir dist && npm run esbuild && npm run ts:types",
-    "build:watch": "esbuild src/bundle.ts --bundle  --sourcemap --target=es2020 --outfile=dist/index.js --watch",
+    "build:watch": "esbuild src/bundle.ts --bundle --sourcemap --target=es2020 --outfile=dist/index.js --watch",
     "lint": "eslint .",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -22,7 +21,6 @@
   },
   "author": "peter@peterkroener.de",
   "license": "MIT",
-  "description": "",
   "devDependencies": {
     "@types/jest": "^28.1.4",
     "@typescript-eslint/eslint-plugin": "^5.25.0",
@@ -39,11 +37,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/SirPepe/animated-highlight.git"
+    "url": "git://github.com/CodeMovie/code-movie-runtime.git"
   },
-  "homepage": "https://github.com/SirPepe/animated-highlight",
+  "homepage": "https://github.com/CodeMovie/code-movie-runtime",
   "bugs": {
-    "url": "https://github.com/SirPepe/animated-highlight/issues"
+    "url": "https://github.com/CodeMovie/code-movie-runtime/issues"
   },
   "publishConfig": {
     "access": "public"

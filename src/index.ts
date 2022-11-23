@@ -1,6 +1,6 @@
 declare global {
   interface HTMLElementTagNameMap {
-    "animated-highlight": AnimatedHighlight;
+    "code-movie-runtime": CodeMovieRuntime;
   }
 }
 
@@ -30,7 +30,8 @@ function parseKeyframesAttributeValue(value: unknown): number[] {
   return [];
 }
 
-export class AnimatedHighlight extends HTMLElement {
+export class CodeMovieRuntime extends HTMLElement {
+  // The template function must be public to allow users to replace it
   static _template(): [HTMLSlotElement, HTMLSlotElement, HTMLStyleElement] {
     const mainSlot = document.createElement("slot");
     const controlsSlot = document.createElement("slot");
@@ -54,7 +55,7 @@ export class AnimatedHighlight extends HTMLElement {
     return [mainSlot, controlsSlot, styles];
   }
 
-  // Shadow DOM must be open to allow users to mess around with its contents
+  // Shadow DOM must be open to allow users to mess with its contents
   #shadow = this.attachShadow({ mode: "open" });
 
   // Hosts the runtime's content. The first hosted element gets assigned the
@@ -71,17 +72,17 @@ export class AnimatedHighlight extends HTMLElement {
   #keyframeIdx = 0;
 
   // Next index in the array of keyframes. Always null except when the event
-  // `beforechange` fires.
+  // `cm-beforeframechange` fires.
   #nextKeyframeIdx: null | number = null;
 
   constructor() {
     super();
-    const [mainSlot, controlsSlot, styles] = AnimatedHighlight._template();
+    const [mainSlot, controlsSlot, styles] = CodeMovieRuntime._template();
     this.#mainSlot = mainSlot;
     this.#shadow.append(mainSlot, controlsSlot, styles);
   }
 
-  // Of the three existing attributes, "controls" does not need to be monitored,
+  // Of the three existing attributes, "controls" does not need to be observed,
   // because its effects are handled by CSS alone.
   static get observedAttributes() {
     return ["keyframes", "current"];
@@ -180,7 +181,7 @@ export class AnimatedHighlight extends HTMLElement {
     }
     this.#nextKeyframeIdx = targetKeyframeIdx;
     const proceed = this.dispatchEvent(
-      new Event("ah-beforeframechange", { bubbles: true, cancelable: true })
+      new Event("cm-beforeframechange", { bubbles: true, cancelable: true })
     );
     this.#nextKeyframeIdx = null;
     if (!proceed) {
@@ -190,7 +191,7 @@ export class AnimatedHighlight extends HTMLElement {
     if (targetKeyframeIdx !== this.#keyframeIdx) {
       this.#keyframeIdx = targetKeyframeIdx;
     }
-    this.dispatchEvent(new Event("ah-afterframechange", { bubbles: true }));
+    this.dispatchEvent(new Event("cm-afterframechange", { bubbles: true }));
   }
 
   _setClass(targetKeyframe: number): void {
