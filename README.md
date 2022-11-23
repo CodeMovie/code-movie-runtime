@@ -7,6 +7,21 @@ convenient wrapper around animations by [Code.Movie](https://code.movie/). The
 element is extremely basic and meant to be used by other tools or hacked and
 extended by you, the user.
 
+## Setup
+
+You can install the library as `@codemovie/code-movie-runtime` from NPM,
+[download the latest release from GitHub](https://github.com/CodeMovie/code-movie-runtime/releases)
+or just grab either `bundle.js` or `index.js`
+[from the source code](https://github.com/CodeMovie/code-movie-runtime/tree/main/dist).
+
+`bundle.js` is a browser-compatible, minified bundle that auto-registers the
+custom element `<code-movie-runtime>`. You can throw `bundle.js` into any web
+page without doing anything else and it will just work.
+
+`index.js` is an ESM module that exports the the custom element class without
+registering. Use this if you want to subclass the implementation, use a
+different tag name, or use a module bundler/native modules.
+
 ## HTML API
 
 ### General usage
@@ -29,8 +44,8 @@ existence of the `controls` attribute provides basic forwards/backwards buttons.
 
 Attribute summary:
 
-* `controls`: When present, shows controls UI (by default just a pair of forwards/backwards buttons). Reflected by the DOM property `controls`
-* `keyframes`: Defines the list of keyframes with a value of whitespace-separated positive integers. Values that are anything but a list of whitespace-separated numbers are equal to the attribute missing (eg. there are no keyframes at all in this case). The list of keyframes is always sorted in ascending order and cleared of any duplicates or non-numbers. Negative numbers are interpreted as positive numbers.
+* `controls`: Boolean attribute. When present, shows controls UI (by default just a pair of forwards/backwards buttons). Reflected by the DOM property `controls`.
+* `keyframes`: Defines the list of keyframes with a value of whitespace-separated positive integers. Values that are anything but a list of whitespace-separated integers are equal to the attribute missing (eg. there are no keyframes at all in this case). The list of keyframes is interally sorted in ascending order and cleared of any duplicates or non-numbers. Negative numbers are interpreted as positive numbers.
 * `current`: Indicates the current frame. Can be changed to change the current frame. Reflected by the DOM property `current`. Values that are anything but a positive integer are treated as `0`.
 
 ### Custom controls
@@ -40,7 +55,7 @@ options to remedy this:
 
 #### 1. Wrap the element
 
-You can simply wrap an `<code-movie-runtime>` element *without* a `controls`
+You can simply wrap a `<code-movie-runtime>` element *without* a `controls`
 attribute and add your own custom logic that uses the JavaScript API described
 below. This is probably the way to go for integration in frameworks like React.
 
@@ -97,18 +112,20 @@ window.customElements.get("code-movie-runtime") ??
 ### getter/setter `controls` (boolean)
 
 Reflects the HTML attribute `controls`. Setting this property to a falsy value
-removes the attribute.
+removes the attribute and makes the control UI invisible. Note that this also
+affects custom control UI that has been slotted.
 
 ### getter/setter `current` (number)
 
-Reflects the current keyframe. The setter coerces and rounds values to whole numbers and clamps them to the range of available keyframes.
+Reflects and sets the current keyframe. The setter can be used to navigate to a
+specific keyframe. It  coerces and rounds values to integers and clamps them to
+the range of available keyframes.
 
 ### getter `nextCurrent` (number | null)
 
 Reflects the keyframe the element is about to switch to during an
-`cm-beforeframechange` event. This property is only set to a number during this
-event and returns `null` at any other time. The property can be inspected when
-handling an `cm-beforeframechange` and its value can be used to decide if the
+`cm-beforeframechange` event. This property is only set during this event and
+returns `null` at any other time. The property can be inspected when handling a `cm-beforeframechange` and its value can be used to decide if the
 event should be canceled.
 
 ### getter `maxFrame` (number)
@@ -118,7 +135,8 @@ Returns the last keyframe.
 ### getter/setter `keyframes` (Array\<number\>)
 
 Reflects the HTML attribute `keyframes`. Setting this property to anything but
-an array is equal to setting the property to an empty array.
+an array is equal to setting the property to an empty array. Non-numeric array
+contents is coerced to positive integers if possible and discarded otherwise.
 
 ### methods `next()` and `prev()`
 
@@ -131,7 +149,7 @@ new keyframe.
 Fires before a frame change occurs. Call `preventDefault()` on the event to stop
 the frame change from happening. You can inspect the event target's `current`
 property to figure out the current frame and the event target's `nextCurrent`
-property to see what the next frame is going to be... and then decide whether or
+property to see what the next frame is going to be and then decide whether or
 not you want to to stop the frame change.
 
 ### Event `cm-afterframechange` (bubbles, not cancelable, not composed)
@@ -142,7 +160,8 @@ As the name suggests, this is fired after a frame change has occurred.
 
 Neither dom properties nor HTML attributes for the events `cm-beforeframechange`
 and `cm-afterframechange` are implemented! You *must* use `addEventListener()`,
-attributes or properties like `onCmAfterframechange = ...` are not supported.
+attributes or properties like `onCmAfterframechange = ...` are
+**not supported.**
 
 ## Integrations
 

@@ -72,6 +72,10 @@ describe("attributes and properties", () => {
     instance.keyframes = [0, 1, "a", 2] as any;
     expect(instance.keyframes).toEqual([0, 1, 2]);
     expect(instance.getAttribute("keyframes")).toBe("0 1 2");
+    // setting to an array with numeric non-numbers inside
+    instance.keyframes = [0, 1, "3", 2] as any;
+    expect(instance.keyframes).toEqual([0, 1, 2, 3]);
+    expect(instance.getAttribute("keyframes")).toBe("0 1 2 3");
     // addition via attributes
     instance.setAttribute("keyframes", "0 1   2\n\n3");
     expect(instance.keyframes).toEqual([0, 1, 2, 3]);
