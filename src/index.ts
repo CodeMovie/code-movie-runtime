@@ -1,3 +1,4 @@
+import { CmAfterFrameChangeEvent, CmBeforeFrameChangeEvent } from "./events";
 import {
   parseKeyframesAttributeValue,
   toFiniteInt,
@@ -161,9 +162,7 @@ export class CodeMovieRuntime extends HTMLElement {
       }
     }
     this.#nextKeyframeIdx = targetKeyframeIdx;
-    const proceed = this.dispatchEvent(
-      new Event("cm-beforeframechange", { bubbles: true, cancelable: true })
-    );
+    const proceed = this.dispatchEvent(new CmBeforeFrameChangeEvent());
     this.#nextKeyframeIdx = null;
     if (!proceed) {
       return;
@@ -172,7 +171,7 @@ export class CodeMovieRuntime extends HTMLElement {
     if (targetKeyframeIdx !== this.#keyframeIdx) {
       this.#keyframeIdx = targetKeyframeIdx;
     }
-    this.dispatchEvent(new Event("cm-afterframechange", { bubbles: true }));
+    this.dispatchEvent(new CmAfterFrameChangeEvent());
   }
 
   _setClass(targetKeyframe: number): void {
