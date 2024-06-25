@@ -1,4 +1,4 @@
-import { CodeMovieRuntime } from "../src";
+import { CodeMovieRuntime } from "../src/lib";
 
 beforeAll(() => {
   window.customElements.define("code-movie-runtime", CodeMovieRuntime);
