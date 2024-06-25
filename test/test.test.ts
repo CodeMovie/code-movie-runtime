@@ -7,7 +7,7 @@ beforeAll(() => {
 
 function $(
   attributes: Record<string, any> = {},
-  innerHTML = ""
+  innerHTML = "",
 ): CodeMovieRuntime {
   const instance = document.createElement("code-movie-runtime");
   for (const name in attributes) {

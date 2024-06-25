@@ -180,8 +180,9 @@ export class CodeMovieRuntime extends HTMLElement {
       }
     }
     this.#nextKeyframeIdx = targetKeyframeIdx;
+
     const proceed = this.dispatchEvent(
-      new Event("cm-beforeframechange", { bubbles: true, cancelable: true })
+      new Event("cm-beforeframechange", { bubbles: true, cancelable: true }),
     );
     this.#nextKeyframeIdx = null;
     if (!proceed) {

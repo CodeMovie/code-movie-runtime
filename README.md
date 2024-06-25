@@ -44,9 +44,9 @@ existence of the `controls` attribute provides basic forwards/backwards buttons.
 
 Attribute summary:
 
-* `controls`: Boolean attribute. When present, shows controls UI (by default just a pair of forwards/backwards buttons). Reflected by the DOM property `controls`.
-* `keyframes`: Defines the list of keyframes with a value of whitespace-separated positive integers. Values that are anything but a list of whitespace-separated integers are equal to the attribute missing (eg. there are no keyframes at all in this case). The list of keyframes is interally sorted in ascending order and cleared of any duplicates or non-numbers. Negative numbers are interpreted as positive numbers.
-* `current`: Indicates the current frame. Can be changed to change the current frame. Reflected by the DOM property `current`. Values that are anything but a positive integer are treated as `0`.
+- `controls`: Boolean attribute. When present, shows controls UI (by default just a pair of forwards/backwards buttons). Reflected by the DOM property `controls`.
+- `keyframes`: Defines the list of keyframes with a value of whitespace-separated positive integers. Values that are anything but a list of whitespace-separated integers are equal to the attribute missing (eg. there are no keyframes at all in this case). The list of keyframes is interally sorted in ascending order and cleared of any duplicates or non-numbers. Negative numbers are interpreted as positive numbers.
+- `current`: Indicates the current frame. Can be changed to change the current frame. Reflected by the DOM property `current`. Values that are anything but a positive integer are treated as `0`.
 
 ### Custom controls
 
@@ -55,7 +55,7 @@ options to remedy this:
 
 #### 1. Wrap the element
 
-You can simply wrap a `<code-movie-runtime>` element *without* a `controls`
+You can simply wrap a `<code-movie-runtime>` element _without_ a `controls`
 attribute and add your own custom logic that uses the JavaScript API described
 below. This is probably the way to go for integration in frameworks like React.
 
@@ -64,9 +64,9 @@ below. This is probably the way to go for integration in frameworks like React.
 If you just want to reposition and re-style the existing controls, you can use
 the following CSS [`::part()` selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/::part):
 
-* `code-movie-runtime::part(controls)`: The container element for the buttons
-* `code-movie-runtime::part(controls-prevBtn)`: The "previous" buttons
-* `code-movie-runtime::part(controls-nextBtn)`: The "next" buttons
+- `code-movie-runtime::part(controls)`: The container element for the buttons
+- `code-movie-runtime::part(controls-prevBtn)`: The "previous" buttons
+- `code-movie-runtime::part(controls-nextBtn)`: The "next" buttons
 
 The buttons are `<button>` elements with `<span>` elements inside.
 
@@ -106,7 +106,6 @@ import { CodeMovieRuntime } from "@codemovie/code-movie-runtime";
 
 window.customElements.get("code-movie-runtime") ??
   window.customElements.define("code-movie-runtime", CodeMovieRuntime);
-
 ```
 
 ### getter/setter `controls` (boolean)
@@ -118,7 +117,7 @@ affects custom control UI that has been slotted.
 ### getter/setter `current` (number)
 
 Reflects and sets the current keyframe. The setter can be used to navigate to a
-specific keyframe. It  coerces and rounds values to integers and clamps them to
+specific keyframe. It coerces and rounds values to integers and clamps them to
 the range of available keyframes.
 
 ### getter `nextCurrent` (number | null)
@@ -159,7 +158,7 @@ As the name suggests, this is fired after a frame change has occurred.
 ## Notes
 
 Neither dom properties nor HTML attributes for the events `cm-beforeframechange`
-and `cm-afterframechange` are implemented! You *must* use `addEventListener()`,
+and `cm-afterframechange` are implemented! You _must_ use `addEventListener()`,
 attributes or properties like `onCmAfterframechange = ...` are
 **not supported.**
 

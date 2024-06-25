@@ -3,9 +3,7 @@
   "compilerOptions": {
     "declaration": true,
     "declarationDir": "dist",
-    "emitDeclarationOnly": true,
+    "emitDeclarationOnly": true
   },
-  "include": [
-    "src/index.ts"
-  ]
+  "include": ["src/index.ts"]
 }
