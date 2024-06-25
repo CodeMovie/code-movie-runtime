@@ -3,7 +3,7 @@
   "description": "Web runtime element for Code.Movie animations",
   "version": "2.0.0",
   "type": "module",
-  "main": "dist/module.js",
+  "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
     "lint": "eslint && prettier . --check",
