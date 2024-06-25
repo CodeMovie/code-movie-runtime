@@ -1,4 +1,4 @@
-import { CodeMovieRuntime } from "../src";
+import { CodeMovieRuntime } from "../src/lib";
 
 beforeAll(() => {
   window.customElements.define("code-movie-runtime", CodeMovieRuntime);
@@ -7,7 +7,7 @@ beforeAll(() => {
 
 function $(
   attributes: Record<string, any> = {},
-  innerHTML = ""
+  innerHTML = "",
 ): CodeMovieRuntime {
   const instance = document.createElement("code-movie-runtime");
   for (const name in attributes) {

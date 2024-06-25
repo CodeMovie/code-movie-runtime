@@ -6,13 +6,6 @@
     "moduleResolution": "node",
     "esModuleInterop": true
   },
-  "include": [
-    "src/**/*",
-    "test/**/*"
-  ],
-  "exclude": [
-    "demo",
-    "dist",
-    "node_modules",
-  ]
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["demo", "dist", "node_modules"]
 }

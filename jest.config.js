@@ -1,6 +1,4 @@
-/* eslint-disable */
-// @ts-ignore
-module.exports = {
+export default {
   preset: "ts-jest",
   testEnvironment: "jsdom",
 };
