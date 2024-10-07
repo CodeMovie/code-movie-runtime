@@ -95,6 +95,10 @@ Reflects the HTML attribute `keyframes`. Setting this property to anything but a
 
 Go to the next or previous keyframe respectively, unless the corresponding `cm-beforeframechange` event gets cancelled. Returns a number indicating the new keyframe.
 
+### method `go(value: number): number`
+
+Sets the current keyframe to the specified value just like the setter for `current` does. Coerces and rounds input values to integers and clamps them to the range of available keyframes. Returns the current keyframe.
+
 ### Event `cm-beforeframechange` (bubbles, cancelable, not composed)
 
 Fires before a frame change occurs. Call `preventDefault()` on the event to stop the frame change from happening. You can inspect the event target's `current` property to figure out the current frame and the event target's `nextCurrent` property to see what the next frame is going to be and then decide whether or not you want to to stop the frame change.

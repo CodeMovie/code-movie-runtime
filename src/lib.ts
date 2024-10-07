@@ -71,6 +71,7 @@ export class CodeMovieRuntime extends HTMLElement {
     this.#mainSlot = mainSlot;
     this.#shadow.append(mainSlot, controlsSlot, styles);
     this.#shadow.addEventListener("click", this._handleClick);
+    mainSlot.addEventListener("slotchange", () => this._goToCurrent());
   }
 
   // Of the three existing attributes, "controls" does not need to be observed,
@@ -210,6 +211,11 @@ export class CodeMovieRuntime extends HTMLElement {
   prev(): number {
     this.#keyframeIdx -= 1;
     this._goToCurrent();
+    return this.current;
+  }
+
+  go(inputValue: number): number {
+    this.current = inputValue;
     return this.current;
   }
 

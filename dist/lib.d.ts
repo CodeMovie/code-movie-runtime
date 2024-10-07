@@ -17,5 +17,6 @@ export declare class CodeMovieRuntime extends HTMLElement {
     _setClass(targetKeyframe: number): void;
     next(): number;
     prev(): number;
+    go(inputValue: number): number;
     _handleClick: (evt: Event) => void;
 }

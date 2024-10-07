@@ -1,8 +1,14 @@
 import { CodeMovieRuntime } from "../src/lib";
 
+const wait = () => new Promise((r) => setTimeout(r, 0));
+
 beforeAll(() => {
   window.customElements.define("code-movie-runtime", CodeMovieRuntime);
   return window.customElements.whenDefined("code-movie-runtime");
+});
+
+afterEach(() => {
+  document.querySelectorAll("code-movie-runtime").forEach((el) => el.remove());
 });
 
 function $(
@@ -115,5 +121,30 @@ describe("attributes and properties", () => {
     instance.removeAttribute("current");
     expect(instance.current).toEqual(0);
     expect(instance.hasAttribute("current")).toBe(false);
+  });
+});
+
+describe("toggle classes", () => {
+  test("with go(), next(), prev()", () => {
+    const instance = $({ keyframes: "0 1 2 3" }, "<div></div>");
+    const child = instance.firstChild as HTMLDivElement;
+    instance.go(2);
+    expect(child.classList.contains("frame2")).toBe(true);
+    instance.go(0);
+    expect(child.classList.contains("frame2")).toBe(false);
+    expect(child.classList.contains("frame0")).toBe(true);
+    instance.next();
+    expect(child.classList.contains("frame0")).toBe(false);
+    expect(child.classList.contains("frame1")).toBe(true);
+    instance.prev();
+    expect(child.classList.contains("frame1")).toBe(false);
+    expect(child.classList.contains("frame0")).toBe(true);
+  });
+
+  test("on slotchange", async () => {
+    const instance = $({ keyframes: "0 1 2 3" }, "<div></div>");
+    const child = instance.firstChild as HTMLDivElement;
+    await wait(); // allow the async slotchange event to fire
+    expect(child.classList.contains("frame0")).toBe(true);
   });
 });
