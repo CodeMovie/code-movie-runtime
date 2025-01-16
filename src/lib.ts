@@ -22,12 +22,13 @@ function parseKeyframesAttributeValue(value: unknown): number[] {
 
 export class CodeMovieRuntime extends HTMLElement {
   // The template function must be public to allow users to replace it
-  static _template(): [HTMLSlotElement, HTMLSlotElement, HTMLStyleElement] {
-    const mainSlot = document.createElement("slot");
-    const controlsSlot = document.createElement("slot");
-    controlsSlot.name = "controls";
-    controlsSlot.innerHTML = `
-      <div part="controls" class="defaultControls">
+  static _template(): Element[] {
+    const tmp = document.createElement("div");
+    tmp.innerHTML = `<div part="wrapper">
+  <slot></slot>
+  <div part="controls-wrapper">
+    <slot name="controls">
+      <div part="controls">
         <button part="controls-prevBtn" data-command="prev">
           <span>&lt;</span>
         </button>
@@ -35,24 +36,29 @@ export class CodeMovieRuntime extends HTMLElement {
           <span>&gt;</span>
         </button>
       </div>
-    `;
-    const styles = document.createElement("style");
-    styles.innerHTML = `
-      :host { display: grid; }
-      :host(:not([controls])) slot[name=controls] { display: none }
-      .defaultControls { position: relative; z-index: 1337; }
-    `;
-    return [mainSlot, controlsSlot, styles];
+    </slot>
+  </div>
+  <div part="aux-wrapper">
+    <slot name="aux"></slot>
+  </div>
+</div>
+<style>
+[part="wrapper"] { display: grid; }
+:host(:not([controls])) slot[name="controls"] { display: none }
+[part="controls"] { position: relative; z-index: 1337; }
+</style>`;
+    return Array.from(tmp.children);
   }
 
   // Shadow DOM must be open to allow users to mess with its contents
-  #shadow = this.attachShadow({ mode: "open" });
+  _shadow = this.attachShadow({ mode: "open" });
 
-  // Hosts the runtime's content. The first hosted element gets assigned the
-  // classes that change in lockstep with "current". The class field serves as
-  // a shortcut to the element in all the methods that need to deal with the
-  // content
-  #mainSlot: HTMLSlotElement;
+  // Controls aux content visibility. This should _not_ be messed with manually.
+  #auxStyles = new CSSStyleSheet();
+
+  // ElementInternals must NOT be accessible, the element relies on having
+  // control over its custom states
+  #internals = this.attachInternals();
 
   // List of the keyframe indices
   #keyframes: number[] = [];
@@ -67,11 +73,15 @@ export class CodeMovieRuntime extends HTMLElement {
 
   constructor() {
     super();
-    const [mainSlot, controlsSlot, styles] = CodeMovieRuntime._template();
-    this.#mainSlot = mainSlot;
-    this.#shadow.append(mainSlot, controlsSlot, styles);
-    this.#shadow.addEventListener("click", this._handleClick);
-    mainSlot.addEventListener("slotchange", () => this._goToCurrent());
+    const content = CodeMovieRuntime._template();
+    this._shadow.append(...content);
+    this._shadow.addEventListener("click", this._handleClick);
+    const defaultSlot = this._shadow.querySelector("slot:not([name])");
+    if (!defaultSlot) {
+      throw new Error("Template does not contain a default slot");
+    }
+    defaultSlot.addEventListener("slotchange", () => this._goToCurrent());
+    this._shadow.adoptedStyleSheets.push(this.#auxStyles);
   }
 
   // Of the three existing attributes, "controls" does not need to be observed,
@@ -86,6 +96,7 @@ export class CodeMovieRuntime extends HTMLElement {
     }
     if (name === "keyframes") {
       this.#keyframes = parseKeyframesAttributeValue(newValue);
+      this.#updateAuxStyles();
       this._goToCurrent();
     } else if (name === "current") {
       this.#keyframeIdx = this._toKeyframeIdx(newValue);
@@ -120,6 +131,7 @@ export class CodeMovieRuntime extends HTMLElement {
       this.removeAttribute("keyframes");
       this.#keyframes = [];
     }
+    this.#updateAuxStyles();
     this._goToCurrent();
   }
 
@@ -160,7 +172,7 @@ export class CodeMovieRuntime extends HTMLElement {
     return Math.max(...this.keyframes);
   }
 
-  _goToCurrent() {
+  _goToCurrent(): boolean {
     let targetKeyframeIdx = this.#keyframeIdx;
     if (!(targetKeyframeIdx in this.#keyframes)) {
       if (this.#keyframes.length >= 1) {
@@ -180,17 +192,26 @@ export class CodeMovieRuntime extends HTMLElement {
     );
     this.#nextKeyframeIdx = null;
     if (!proceed) {
-      return;
+      return false;
     }
-    this._setClass(this.#keyframes[targetKeyframeIdx]);
+    this._setClassesAndStates(this.#keyframes[targetKeyframeIdx]);
     if (targetKeyframeIdx !== this.#keyframeIdx) {
       this.#keyframeIdx = targetKeyframeIdx;
     }
     this.dispatchEvent(new Event("cm-afterframechange", { bubbles: true }));
+    return true;
   }
 
-  _setClass(targetKeyframe: number): void {
-    const targetNode = this.#mainSlot.assignedElements()[0];
+  _setClassesAndStates(targetIdx: number): void {
+    for (const state of this.#internals.states) {
+      if (/^frame[0-9]+$/.test(state)) {
+        this.#internals.states.delete(state);
+      }
+    }
+    this.#internals.states.add(`frame${targetIdx}`);
+    const defaultSlot =
+      this._shadow.querySelector<HTMLSlotElement>("slot:not([name])");
+    const targetNode = defaultSlot?.assignedElements()[0];
     if (!targetNode) {
       return;
     }
@@ -199,23 +220,47 @@ export class CodeMovieRuntime extends HTMLElement {
         targetNode.classList.remove(className);
       }
     }
-    targetNode.classList.add(`frame${targetKeyframe}`);
+    targetNode.classList.add(`frame${targetIdx}`);
+  }
+
+  #updateAuxStyles(): void {
+    let css = `slot[name="aux"]::slotted(*){ display: none }`;
+    for (const frameIdx of this.#keyframes) {
+      css += `:host(:state(frame${frameIdx})) slot[name="aux"]::slotted(.frame${frameIdx}) { display: block; }`;
+    }
+    this.#auxStyles.replaceSync(css);
   }
 
   next(): number {
+    const before = this.#keyframeIdx;
     this.#keyframeIdx += 1;
-    this._goToCurrent();
+    const success = this._goToCurrent();
+    if (!success) {
+      this.#keyframeIdx = before;
+      return before;
+    }
     return this.current;
   }
 
   prev(): number {
+    const before = this.#keyframeIdx;
     this.#keyframeIdx -= 1;
-    this._goToCurrent();
+    const success = this._goToCurrent();
+    if (!success) {
+      this.#keyframeIdx = before;
+      return before;
+    }
     return this.current;
   }
 
   go(inputValue: number): number {
-    this.current = inputValue;
+    const before = this.#keyframeIdx;
+    this.#keyframeIdx = this._toKeyframeIdx(inputValue);
+    const success = this._goToCurrent();
+    if (!success) {
+      this.#keyframeIdx = before;
+      return before;
+    }
     return this.current;
   }
 

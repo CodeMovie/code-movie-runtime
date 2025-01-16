@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.0
+
+- **Feature:** `<code-movie-runtime>` now uses its [custom state set](https://developer.mozilla.org/en-US/docs/Web/API/CustomStateSet) to track the current frame. If the current frame is 7 for example, the CSS selector `code-movie-runtime:state(frame7)` will match.
+- **Feature**: support auxiliary content via the `aux` slot
+
 ## 2.1.0
 
 - **Feature:** the new DOM method: `go(targetKeyframe)` can be used as an alternative way to navigate to specific keyframes. The setter `current` does the same thing, but if you'd rather use a method, `go()` has you covered.

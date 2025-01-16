@@ -16,6 +16,7 @@ The element `<code-movie-runtime>` is a custom HTML element with several slots, 
 
 ```html
 <script type="module" src="dist/index.js"></script>
+
 <code-movie-runtime controls keyframes="0 1 2 3">
   <div>Switch classes on me!</div>
 </code-movie-runtime>
@@ -67,6 +68,19 @@ All you need to do to make your custom buttons (in this case, `<div>` elements) 
 
 The element's shadow root is open and most of the private properties on the `CodeMovieRuntime` class are not actually private. Go and mess with them!
 
+### Auxiliary content
+
+Elements assigned to the slot named `aux` are styled to be only visible when their class name matches the currently active frame:
+
+```html
+<code-movie-runtime controls keyframes="0 1 2">
+  <div>Switch classes on me!</div>
+  <p slot="aux" class="frame0">Only visible for step 0</p>
+  <p slot="aux" class="frame1">Only visible for step 1</p>
+  <p slot="aux" class="frame2">Only visible for step 2</p>
+</code-movie-runtime>
+```
+
 ## JavaScript API
 
 Instances of `<code-movie-runtime>` implement the following DOM APIs:
@@ -106,6 +120,19 @@ Fires before a frame change occurs. Call `preventDefault()` on the event to stop
 ### Event `cm-afterframechange` (bubbles, not cancelable, not composed)
 
 As the name suggests, this is fired after a frame change has occurred.
+
+## CSS API
+
+The element uses its [custom state set](https://developer.mozilla.org/en-US/docs/Web/API/CustomStateSet) to track the current frame. If the current frame is 7 for example, the CSS selector `code-movie-runtime:state(frame7)` will match.
+
+The default shadow DOM template by overriding the static method `_template`. The default template provides several [shadow parts](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_shadow_parts) for your CSS to hook into:
+
+- `wrapper`
+  - `controls-wrapper`
+    - `controls` (default controls, can be replaced entirely as explained above)
+      - `controls-prevBtn`
+      - `controls-nextBtn`
+  - `aux-wrapper`
 
 ## Notes
 
