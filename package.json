@@ -1,7 +1,7 @@
 {
   "name": "@codemovie/code-movie-runtime",
   "description": "Web runtime element for Code.Movie animations",
-  "version": "2.1.0",
+  "version": "2.2.0",
   "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
