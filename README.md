@@ -22,13 +22,13 @@ The element `<code-movie-runtime>` is a custom HTML element with several slots, 
 </code-movie-runtime>
 ```
 
-This will cycle classes on the `div` element wrapped by the custom elements from `frame0` to `frame1` to `frame2` to `frame3`. The keyframes are defined as a whitespace-separated list of numbers in the `keyframes` attribute while the existence of the `controls` attribute provides basic forwards/backwards buttons.
+This will render twe buttons below the `<div>`. Clicking on them cycles classes on the `<div>` from `frame0` to `frame1` to `frame2` to `frame3`. The keyframes are defined as a whitespace-separated list of numbers in the `keyframes` attribute while the existence of the `controls` attribute provides basic forwards/backwards buttons.
 
 Attribute summary:
 
 - `controls`: Boolean attribute. When present, shows controls UI (by default just a pair of forwards/backwards buttons). Reflected by the DOM property `controls`.
 - `keyframes`: Defines the list of keyframes with a value of whitespace-separated positive integers. Values that are anything but a list of whitespace-separated integers are equal to the attribute missing (eg. there are no keyframes at all in this case). The list of keyframes is internally sorted in ascending order and cleared of any duplicates or non-numbers. Negative numbers are interpreted as positive numbers.
-- `current`: Indicates the current frame. Can be changed to change the current frame. Reflected by the DOM property `current`. Values that are anything but a positive integer are treated as `0`.
+- `current`: Indicates the current frame index. Can be set to another number to change the current frame. Reflected by the DOM property `current`. Values that are anything but a positive integer are treated as `0`.
 
 ### Custom controls
 
@@ -43,8 +43,8 @@ You can wrap a `<code-movie-runtime>` element _without_ a `controls` attribute a
 If you just want to reposition and re-style the existing controls, you can use the following CSS [`::part()` selectors](https://developer.mozilla.org/en-US/docs/Web/CSS/::part):
 
 - `code-movie-runtime::part(controls)`: The container element for the buttons
-- `code-movie-runtime::part(controls-prevBtn)`: The "previous" buttons
-- `code-movie-runtime::part(controls-nextBtn)`: The "next" buttons
+- `code-movie-runtime::part(controls-prevBtn)`: The "previous" button
+- `code-movie-runtime::part(controls-nextBtn)`: The "next" button
 
 The buttons are `<button>` elements with `<span>` elements inside.
 
