@@ -6,7 +6,7 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "lint": "eslint && prettier . --check",
+    "lint": "prettier . --check && eslint src test",
     "types": "tsc -p tsconfig.types.json",
     "build": "rm -rf dist && npm run types && esbuild src/index.ts --bundle --minify --format=esm --target=es2020 --outfile=dist/index.js ",
     "build-dev": "esbuild src/index.ts --bundle --sourcemap --format=esm --target=es2020 --outfile=dist/index.js --watch",
@@ -25,10 +25,10 @@
     "@web/test-runner": "^0.19.0",
     "@web/test-runner-playwright": "^0.11.0",
     "esbuild": "^0.24.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^10.0.0",
     "prettier": "^3.3.2",
-    "release-it": "^17.4.0",
+    "release-it": "^18.0.0",
     "sinon": "^19.0.0",
     "typescript": "^5.5.2",
     "typescript-eslint": "^8.8.0"
