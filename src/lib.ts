@@ -60,7 +60,7 @@ export class CodeMovieRuntime extends HTMLElement {
   // control over its custom states
   #internals = this.attachInternals();
 
-  // List of the keyframe indices
+  // List of the keyframe indices, sorted in ascending order
   #keyframes: number[] = [];
 
   // Current index in the array of keyframes. The public getter "current"
@@ -209,6 +209,14 @@ export class CodeMovieRuntime extends HTMLElement {
       }
     }
     this.#internals.states.add(`frame${targetIdx}`);
+    this.#internals.states.add(`hasNext`);
+    this.#internals.states.add(`hasPrev`);
+    if (targetIdx === 0) {
+      this.#internals.states.delete(`hasPrev`);
+    }
+    if (targetIdx === this.#keyframes.at(-1)) {
+      this.#internals.states.delete(`hasNext`);
+    }
     const defaultSlot =
       this._shadow.querySelector<HTMLSlotElement>("slot:not([name])");
     const targetNode = defaultSlot?.assignedElements()[0];

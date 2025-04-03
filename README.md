@@ -123,7 +123,7 @@ As the name suggests, this is fired after a frame change has occurred.
 
 ## CSS API
 
-The element uses its [custom state set](https://developer.mozilla.org/en-US/docs/Web/API/CustomStateSet) to track the current frame. If the current frame is 7 for example, the CSS selector `code-movie-runtime:state(frame7)` will match.
+The element uses its [custom state set](https://developer.mozilla.org/en-US/docs/Web/API/CustomStateSet) to track the current frame. If the current frame is 7 for example, the CSS selector `code-movie-runtime:state(frame7)` will match. There are also the custom states `hasNext` and `hasPrev`, which indicate if the element is at its first or last keyframe.
 
 The default shadow DOM template by overriding the static method `_template`. The default template provides several [shadow parts](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_shadow_parts) for your CSS to hook into:
 

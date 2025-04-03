@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.3.0
+
+- **Feature:** `<code-movie-runtime>` now tracks whether it is at its first or last keyframe in its [custom state set](https://developer.mozilla.org/en-US/docs/Web/API/CustomStateSet) via the states `hasNext` and `hasPrev`.
+
 ## 2.2.0
 
 - **Feature:** `<code-movie-runtime>` now uses its [custom state set](https://developer.mozilla.org/en-US/docs/Web/API/CustomStateSet) to track the current frame. If the current frame is 7 for example, the CSS selector `code-movie-runtime:state(frame7)` will match.
