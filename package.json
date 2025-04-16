@@ -1,6 +1,14 @@
 {
   "name": "@codemovie/code-movie-runtime",
   "description": "Web runtime element for Code.Movie animations",
+  "keywords": [
+    "highlight",
+    "syntax",
+    "animation",
+    "morph",
+    "diff",
+    "code"
+  ],
   "version": "2.3.0",
   "type": "module",
   "main": "dist/index.js",
