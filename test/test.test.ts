@@ -35,6 +35,16 @@ describe("<code-movie-runtime>", () => {
   });
 
   describe("attributes and properties", () => {
+    test("with()", () => {
+      const instance = CodeMovieRuntime.with(4);
+      expect(instance.outerHTML).to.equal(
+        `<code-movie-runtime keyframes="0 1 2 3"></code-movie-runtime>`,
+      );
+      expect(instance.keyframes).to.eql([0, 1, 2, 3]);
+    });
+  });
+
+  describe("attributes and properties", () => {
     test("controls", () => {
       const instance = $();
       // defaults

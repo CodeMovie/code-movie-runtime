@@ -87,41 +87,54 @@ Elements assigned to the slot named `aux` are styled to be only visible when the
 
 ## JavaScript API
 
+### class `CodeMovieRuntime`
+
+#### static `with(length: number)` (CodeMovieRuntime)
+
+Factory function that takes a number of steps and returns an instance of `<code-movie-runtime>` with the `keyframes` attribute set accordingly. Example:
+
+```javascript
+let instance = CodeMovieRuntime.with(4);
+// instance = <code-movie-runtime keyframes="0, 1, 2, 3"></code-movie-runtime>
+```
+
+### Instances
+
 Instances of `<code-movie-runtime>` implement the following DOM APIs:
 
-### getter/setter `controls` (boolean)
+#### getter/setter `controls` (boolean)
 
 Reflects the HTML attribute `controls`. Setting this property to a falsy value removes the attribute and makes the control UI invisible. Note that this also affects custom control UI that has been slotted.
 
-### getter/setter `current` (number)
+#### getter/setter `current` (number)
 
 Reflects and sets the current keyframe. The setter can be used to navigate to a specific keyframe. It coerces and rounds values to integers and clamps them to the range of available keyframes.
 
-### getter `nextCurrent` (number | null)
+#### getter `nextCurrent` (number | null)
 
 Reflects the keyframe the element is about to switch to during an `cm-beforeframechange` event. This property is only set during this event and returns `null` at any other time. The property can be inspected when handling a `cm-beforeframechange` and its value can be used to decide if the event should be canceled.
 
-### getter `maxFrame` (number)
+#### getter `maxFrame` (number)
 
 Returns the last keyframe.
 
-### getter/setter `keyframes` (Array\<number\>)
+#### getter/setter `keyframes` (Array\<number\>)
 
 Reflects the HTML attribute `keyframes`. Setting this property to anything but an array is equal to setting the property to an empty array. Non-numeric array contents is coerced to positive integers if possible and discarded otherwise.
 
-### methods `next()` and `prev()`
+#### methods `next()` and `prev()`
 
 Go to the next or previous keyframe respectively, unless the corresponding `cm-beforeframechange` event gets cancelled. Returns a number indicating the new keyframe.
 
-### method `go(value: number): number`
+#### method `go(value: number): number`
 
 Sets the current keyframe to the specified value just like the setter for `current` does. Coerces and rounds input values to integers and clamps them to the range of available keyframes. Returns the current keyframe.
 
-### Event `cm-beforeframechange` (bubbles, cancelable, not composed)
+#### Event `cm-beforeframechange` (bubbles, cancelable, not composed)
 
 Fires before a frame change occurs. Call `preventDefault()` on the event to stop the frame change from happening. You can inspect the event target's `current` property to figure out the current frame and the event target's `nextCurrent` property to see what the next frame is going to be and then decide whether or not you want to to stop the frame change.
 
-### Event `cm-afterframechange` (bubbles, not cancelable, not composed)
+#### Event `cm-afterframechange` (bubbles, not cancelable, not composed)
 
 As the name suggests, this is fired after a frame change has occurred.
 

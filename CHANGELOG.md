@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.0
+
+- **Feature:** New static factory method `with(length)`.
+
 ## 2.3.0
 
 - **Feature:** `<code-movie-runtime>` now tracks whether it is at its first or last keyframe in its [custom state set](https://developer.mozilla.org/en-US/docs/Web/API/CustomStateSet) via the states `hasNext` and `hasPrev`.

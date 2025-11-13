@@ -84,6 +84,12 @@ export class CodeMovieRuntime extends HTMLElement {
     this._shadow.adoptedStyleSheets.push(this.#auxStyles);
   }
 
+  static with(length: number): CodeMovieRuntime {
+    const instance = new this();
+    instance.keyframes = Array.from(Array.from({ length }).keys());
+    return instance;
+  }
+
   // Of the three existing attributes, "controls" does not need to be observed,
   // because its effects are handled by CSS alone.
   static get observedAttributes() {
