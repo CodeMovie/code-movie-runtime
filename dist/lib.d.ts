@@ -3,6 +3,7 @@ export declare class CodeMovieRuntime extends HTMLElement {
     static _template(): Element[];
     _shadow: ShadowRoot;
     constructor();
+    static with(length: number): CodeMovieRuntime;
     static get observedAttributes(): string[];
     attributeChangedCallback(name: string, oldValue: unknown, newValue: string): void;
     get controls(): boolean;
