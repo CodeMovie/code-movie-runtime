@@ -6,6 +6,10 @@ Convenient wrapper for [Code.Movie](https://code.movie/) animations that provide
 
 You can install the library as `@codemovie/code-movie-runtime` from NPM, [download the latest release from GitHub](https://github.com/CodeMovie/code-movie-runtime/releases) or just grab `dist/index.js` [from the source code](https://github.com/CodeMovie/code-movie-runtime/tree/main/dist). The library exports the component class and auto-registers the tag name `code-movie-runtime`. You can throw the module into any web page without doing anything else and it will just work.
 
+<!-- prettier-ignore -->
+> [!IMPORTANT]
+> **This package does _not_ bundle the Code.Movie core library!** You have to either manually install [@codemovie/code-movie](https://www.npmjs.com/package/@codemovie/code-movie) or load the relevant files from a CDN like [jsDelivr](https://www.jsdelivr.com/) as shown in the examples below.
+
 The element works by [slotting](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/slot) another element (the animation) and switching classes on it. The element is extremely basic and meant to be used by other tools or hacked and extended by you, the user.
 
 ## HTML API
