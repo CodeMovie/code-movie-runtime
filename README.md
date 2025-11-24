@@ -95,7 +95,7 @@ Factory function that takes a number of steps and returns an instance of `<code-
 
 ```javascript
 let instance = CodeMovieRuntime.with(4);
-// instance = <code-movie-runtime keyframes="0, 1, 2, 3"></code-movie-runtime>
+// instance = <code-movie-runtime keyframes="0 1 2 3"></code-movie-runtime>
 ```
 
 ### Instances
